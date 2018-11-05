@@ -41,6 +41,7 @@ export function matchImageSnapshotPlugin({ path: screenshotPath }) {
       failureThresholdType = 'pixel',
       customSnapshotsDir,
       customDiffDir,
+      noErrors,
       ...options
     } = {},
   } = snapshotOptions;
@@ -91,6 +92,13 @@ export function matchImageSnapshotPlugin({ path: screenshotPath }) {
     fs.removeSync(diffOutputPath);
     fs.removeSync(snapshotKebabPath);
     snapshotResults.diffOutputPath = diffDotPath;
+
+    if (noErrors) {
+      const differencePercentage = diffRatio * 100;
+      console.log(
+        `Screenshot was ${differencePercentage}% different from saved snapshot with ${diffPixelCount} different pixels.\n  See diff for details: ${diffOutputPath}`
+      );
+    }
 
     return {
       path: diffDotPath,

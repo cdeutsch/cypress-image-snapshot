@@ -37,12 +37,15 @@ export function matchImageSnapshotCommand(defaultOptions) {
           diffRatio,
           diffPixelCount,
           diffOutputPath,
+          noErrors,
         }) => {
           if (!pass && !added && !updated) {
             const differencePercentage = diffRatio * 100;
-            throw new Error(
-              `Screenshot was ${differencePercentage}% different from saved snapshot with ${diffPixelCount} different pixels.\n  See diff for details: ${diffOutputPath}`
-            );
+            if (!noErrors) {
+              throw new Error(
+                `Screenshot was ${differencePercentage}% different from saved snapshot with ${diffPixelCount} different pixels.\n  See diff for details: ${diffOutputPath}`
+              );
+            }
           }
         }
       );
